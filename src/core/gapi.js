@@ -24,7 +24,7 @@
  */
 
 const timeout = 5000
-const gapiUrl = 'https://apis.google.com/js/api.js'
+const gapiUrl = 'https://apis.google.com/js/platform.js'
 
 /** Formats a GoogleUser basic profile object to something readable */
 function _formatUser (guser) {
@@ -55,22 +55,29 @@ export default class GAPI {
    *  document's head if it hasn't been done */
   _load () {
     // resolves immediately if already loaded
+
     if (window.gapi) return Promise.resolve(window.gapi)
 
     // otherwise prepares and loads
     return new Promise((resolve, reject) => {
+      const googleSigninMeta = document.createElement('meta')
+      googleSigninMeta.setAttribute('name', 'google-signin-client_id')
+      googleSigninMeta.setAttribute('content', this.config.clientId)
+      document.head.appendChild(googleSigninMeta)
+
       const script = document.createElement('script')
       script.src = gapiUrl
-      let limit = setTimeout(() => {
-        // reject promise in case of a timeout.
-        script.remove()
-        reject(new Error('gapi load timeout.'))
-      }, timeout)
+      // let limit = setTimeout(() => {
+      //   // reject promise in case of a timeout.
+      //   script.remove()
+      //   reject(new Error('gapi load timeout.'))
+      // }, timeout)
+
       document.head.appendChild(script)
 
       // defines the callback that resolves on successful load
       script.onload = () => {
-        clearTimeout(limit)
+        // clearTimeout(limit)
         // let's reject if the global gapi object has not been created
         if (!window.gapi) reject(new Error('gapi load error.'))
 
