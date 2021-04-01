@@ -1,3 +1,7 @@
+# Note
+
+Fork used to make some hacky changes in the library so I could use it for Sign in with Google at [blogboard.io](https://blogboard.io).
+
 # vue-google-api
 
 This vue 2 plugin is a wrapper for the script needed to do client side operations with Google APIs and Google authentication.
